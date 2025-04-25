@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
 import os
-from views.viewTkinter.viewEstudiante.menuEstudiante import MenuEstudiante
+from .viewEstudiante.menuEstudiante import MenuEstudiante
 
 # Crear la clase principal de la ventana la cual se encargara de mostrar el menu principal
 class MenuPrincipal:
@@ -14,8 +14,8 @@ class MenuPrincipal:
         # Crear la ventana principal
         self.ventana = ctk.CTk()
         self.ventana.title("Sistema Académico")
-        ancho_ventana = int(self.ventana.winfo_screenwidth() * 0.8)
-        alto_ventana = int(self.ventana.winfo_screenheight() * 0.8)
+        ancho_ventana = int(self.ventana.winfo_screenwidth() * 0.7)
+        alto_ventana = int(self.ventana.winfo_screenheight() * 0.5)
         self.ventana.geometry(f"{ancho_ventana}x{alto_ventana}")
     
         # Crear el frame lateral izquierdo
@@ -42,7 +42,6 @@ class MenuPrincipal:
             btn = ctk.CTkButton(self.sidebar, text=text, command=command)
             btn.pack(pady=10, padx=20)
 
-
         # Frame principal
         self.main_frame = ctk.CTkFrame(self.ventana)
         self.main_frame.pack(side="left", fill="both", expand=True)
@@ -60,6 +59,11 @@ class MenuPrincipal:
         ventana_estudiante = MenuEstudiante(self.ventana)
         ventana_estudiante.ventana.mainloop()
     
+    def cerrar_ventana_estudiante(self, ventana_estudiante):
+        self.ventana_estudiante_abierta = False
+        ventana_estudiante.ventana.destroy()
+        self.ventana.deiconify()  # Mostrar la ventana principal
+
     def menu_profesor(self):
         # Placeholder para la función de menú profesor
         pass

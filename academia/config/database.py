@@ -1,10 +1,9 @@
 import mysql.connector
-from dotenv import load_dotenv
 import os
 from mysql.connector.errors import IntegrityError
 from mysql.connector import Error
 # Cargar las variables de entorno desde el archivo .env
-load_dotenv()
+
 
 class  Database:
     
