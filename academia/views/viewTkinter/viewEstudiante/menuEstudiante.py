@@ -19,7 +19,7 @@ class MenuEstudiante:
 
         # Asignar el tamaño de la ventana
         ancho_ventana = int(ancho_pantalla * 0.3)
-        alto_ventana = int(alto_pantalla * 0.45)
+        alto_ventana = int(alto_pantalla * 0.55)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
       # Configuracion de restricciones de la ventana

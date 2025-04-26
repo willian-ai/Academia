@@ -20,7 +20,7 @@ class RegistrarEstudiante:
 
         # Asignar el tamaño de la ventana
         ancho_ventana = int(ancho_pantalla * 0.3)
-        alto_ventana = int(alto_pantalla * 0.45)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}") 
         
         # Configuracion de restricciones de la ventana
@@ -72,18 +72,18 @@ class RegistrarEstudiante:
         
         try:
             self.estudiante_controller.registrar_estudiante(nombre, apellido, correo, telefono)
-            self.mostrar_mensaje(mensaje="Estudiante registrado correctamente")
+            self.notificacion(mensaje="Estudiante registrado correctamente")
             self.root.destroy()
             menu_principal = MenuPrincipal(self.tema_actual, self.db)
             menu_principal.root.mainloop()
         except IntegrityError as e:
-            self.mostrar_mensaje(mensaje="Error al registrar el estudiante")
+            self.notificacion(mensaje="Error al registrar el estudiante")
             print(f"Error al registrar el estudiante: {e}")
         except Exception as e:
-            self.mostrar_mensaje(mensaje="Error al registrar el estudiante")
+            self.notificacion(mensaje="Error al registrar el estudiante")
             print(f"Error al registrar el estudiante: {e}")
 
-    def notificacion(self, titulo, mensaje=""):
+    def notificacion(self, mensaje=""):
         ventana_notificacion = ctk.CTk()
         ventana_notificacion.title("Notificacion")
         ventana_notificacion.geometry("300x150")
@@ -99,16 +99,16 @@ class RegistrarEstudiante:
 
     def validar_campos(self):
         if not self.nombre.get():
-            self.notificacion("Error", "El nombre es requerido")
+            self.notificacion(mensaje="El nombre es requerido")
             return False
         if not self.apellido.get():
-            self.notificacion("Error", "El apellido es requerido")
+            self.notificacion(mensaje="El apellido es requerido")
             return False
-        if not self.correo.get():
-            self.notificacion("Error", "El correo es requerido")
+        if not self.correo.get() or not re.match(r"[^@]+@[^@]+\.[^@]+", self.correo.get()):
+            self.notificacion(mensaje="El correo es requerido")
             return False
         if not self.telefono.get():
-            self.notificacion("Error", "El telefono es requerido")
+            self.notificacion(mensaje="El telefono es requerido")
             return False
         return True
         

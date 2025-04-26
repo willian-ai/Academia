@@ -19,20 +19,20 @@ class EliminarEstudiante:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana   
-        ancho_ventana = int(ancho_pantalla * 0.4)
-        alto_ventana = int(alto_pantalla * 0.4)
+        ancho_ventana = int(ancho_pantalla * 0.5)
+        alto_ventana = int(alto_pantalla * 0.6)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         # Configuracion de restricciones de la ventana
         self.root.resizable(False, False)
 
         # Titulo de la ventana
-        self.titulo_ventana = ctk.CTkLabel(self.root, text="Eliminar Estudiante", font=ctk.CTkFont(size=20, weight="bold"))
-        self.titulo_ventana.pack(pady=20)
+        self.titulo = ctk.CTkLabel(self.root, text="Eliminar Estudiante", font=("Arial", 16))
+        self.titulo.pack(pady=10)
 
         # Crear un frame para la tabla
         self.frame_tabla = ctk.CTkFrame(self.root)
-        self.frame_tabla.pack(pady=20)
+        self.frame_tabla.pack(pady=10)
 
         # Crear el Treeview
         self.tabla = ttk.Treeview(self.frame_tabla, columns=("ID", "Nombre", "Apellido", "Correo", "Telefono"), show="headings")
@@ -58,27 +58,30 @@ class EliminarEstudiante:
 
         # Botones para eliminar estudiante
         self.btn_eliminar = ctk.CTkButton(self.frame_botones, text="Eliminar", command=self.eliminar_estudiante)
-        self.btn_eliminar.pack(side="left", padx=10)
+        self.btn_eliminar.pack(side="left", padx=5)
 
         # Botones para regresar al menu principal
         self.btn_regresar = ctk.CTkButton(self.frame_botones, text="Regresar", command=self.regresar_menu_principal)
-        self.btn_regresar.pack(side="left", padx=10)
+        self.btn_regresar.pack(side="left", padx=5)
 
-        def cargar_datos_tabla(self):
-            try:
+        # Cargar los datos de la tabla al iniciar
+        self.cargar_datos_tabla()
+
+    def cargar_datos_tabla(self):
+        try:
                 # Obtener los datos de la tabla
-                estudiantes = self.estudiante_controller.obtener_todos_estudiantes()
+            estudiantes = self.estudiante_controller.listar_estudiantes()
 
                 # Limpiar la tabla antes de cargar los datos
-                for row in self.tabla.get_children():
-                    self.tabla.delete(row)  
+            for row in self.tabla.get_children():
+                self.tabla.delete(row)  
                 
                 # Insertar los datos en la tabla
-                for estudiante in estudiantes:
-                    self.tabla.insert("", "end", values=(estudiante.id_estudiante, estudiante.nombre, estudiante.apellido, estudiante.correo, estudiante.telefono))
+            for estudiante in estudiantes:
+                self.tabla.insert("", "end", values=(estudiante.id_estudiante, estudiante.nombre, estudiante.apellido, estudiante.correo, estudiante.telefono))
                 
-            except IntegrityError as e:
-                print(f"Error al cargar los datos de la tabla: {e}")
+        except IntegrityError as e:
+            print(f"Error al cargar los datos de la tabla: {e}")
     
     def mostrar_mensaje(self, titulo, mensaje, tipo="info"):
         # Crear una ventana de mensaje personalizado
@@ -96,7 +99,7 @@ class EliminarEstudiante:
 
         # Crear boton aceptar
         btn_aceptar = ctk.CTkButton(ventana_mensaje, text="Aceptar", command=ventana_mensaje.destroy)
-        btn_aceptar.pack(pady=20)
+        btn_aceptar.pack(pady=10)
 
         # Configurar la ventana para que sea modal# Hacer que la ventana sea modal
         ventana_mensaje.transient(self.root)
@@ -123,15 +126,15 @@ class EliminarEstudiante:
 
             # Crear frame para los botones
         frame_botones = ctk.CTkFrame(ventana_confirmacion)
-        frame_botones.pack(pady=20)
+        frame_botones.pack(pady=10)
 
             # Crear boton si 
         btn_si = ctk.CTkButton(frame_botones, text="Si", command=lambda: [respuesta.__setitem__(0, True), ventana_confirmacion.destroy()])
-        btn_si.pack(side="left", padx=10)
+        btn_si.pack(side="left", padx=5)
 
             # Crear boton no
         btn_no = ctk.CTkButton(frame_botones, text="No", command=ventana_confirmacion.destroy)
-        btn_no.pack(side="left", padx=10)
+        btn_no.pack(side="left", padx=5)
 
             # Configurar la ventana para que sea modal
         ventana_confirmacion.transient(self.root)
@@ -152,8 +155,7 @@ class EliminarEstudiante:
         id_estudiante = item["values"][0]
         nombre = item["values"][1]
         apellido = item["values"][2]
-        correo = item["values"][3]
-        telefono = item["values"][4]
+        
 
             # Mostrar la confirmacion
         confirmacion = self.mostrar_confirmacion(
@@ -163,7 +165,7 @@ class EliminarEstudiante:
         if confirmacion:
             try:
                 self.estudiante_controller.eliminar_estudiante(id_estudiante)
-                self.mostrar_mensaje("Eliminacion Exitosa", f"El estudiante {nombre} {apellido} ha sido eliminado correctamente")
+                self.mostrar_mensaje("Eliminacion Exitosa", "El estudiante eliminado correctamente", "info")
                 self.cargar_datos_tabla()
             except Exception as e:
                 self.mostrar_mensaje("Error", f"Error al eliminar el estudiante: {str(e)}", "error")

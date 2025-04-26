@@ -20,20 +20,20 @@ class ActualizarEstudiante:
         alto_pantalla = self.root.winfo_screenheight()  
 
         # Asignar el tamaño de la ventana   
-        ancho_ventana = int(ancho_pantalla * 0.4)
-        alto_ventana = int(alto_pantalla * 0.4)
+        ancho_ventana = int(ancho_pantalla * 0.7)
+        alto_ventana = int(alto_pantalla * 0.6)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")               
 
         # Configuracion de restricciones de la ventana
         self.root.resizable(False, False)
 
         # Titulo de la ventana
-        self.titulo_ventana = ctk.CTkLabel(self.root, text="Actualizar Estudiante", font=ctk.CTkFont(size=20, weight="bold"))
-        self.titulo_ventana.pack(pady=20)
+        self.titulo = ctk.CTkLabel(self.root, text="Actualizar Estudiante", font=ctk.CTkFont(size=20, weight="bold"))
+        self.titulo.pack(pady=10)
 
         # Crear un frame para la tabla
         self.frame_tabla = ctk.CTkFrame(self.root)
-        self.frame_tabla.pack(pady=20)
+        self.frame_tabla.pack(pady=10)
 
         # Crear el Treeview
         self.tabla = ttk.Treeview(self.frame_tabla, columns=("ID", "Nombre", "Apellido", "Correo", "Telefono"), show="headings")    
@@ -55,7 +55,7 @@ class ActualizarEstudiante:
 
         # Cargar los datos de la tabla
         self.frame_botones = ctk.CTkFrame(self.root)
-        self.frame_botones.pack(pady=20)
+        self.frame_botones.pack(pady=10)
 
         # Botones para actualizar estudiante
         self.btn_actualizar = ctk.CTkButton(self.frame_botones, text="Actualizar", command=self.actualizar_estudiante)
@@ -65,10 +65,13 @@ class ActualizarEstudiante:
         self.btn_regresar = ctk.CTkButton(self.frame_botones, text="Regresar", command=self.regresar_menu_principal)
         self.btn_regresar.pack(side="left", padx=10)
 
+        # Cargar los datos de la tabla
+        self.cargar_datos_tabla()
+
     def cargar_datos_tabla(self):
         try:
                 # Obtener los datos de la tabla
-            estudiantes = self.estudiante_controller.obtener_todos_estudiantes()
+            estudiantes = self.estudiante_controller.listar_estudiantes()
 
                 # Limpiar la tabla antes de cargar los datos
             for row in self.tabla.get_children():
@@ -85,7 +88,7 @@ class ActualizarEstudiante:
             # Crear una ventana de mensaje personalizado
         ventana_mensaje = ctk.CTkToplevel(self.root)
         ventana_mensaje.title(titulo)
-        ventana_mensaje.geometry("300x150")
+        ventana_mensaje.geometry("350x420")
         ventana_mensaje.resizable(False, False) 
 
             # Configurar el tema de la ventana
@@ -93,11 +96,11 @@ class ActualizarEstudiante:
 
             # Crear el mensaje
         label_mensaje = ctk.CTkLabel(ventana_mensaje, text=mensaje, font=ctk.CTkFont(size=12))
-        label_mensaje.pack(pady=20)
+        label_mensaje.pack(pady=10)
 
             # Crear boton aceptar
         btn_aceptar = ctk.CTkButton(ventana_mensaje, text="Aceptar", command=ventana_mensaje.destroy)
-        btn_aceptar.pack(pady=20)
+        btn_aceptar.pack(pady=10)
 
             # Configurar la ventana para que sea modal
         ventana_mensaje.transient(self.root)
@@ -109,7 +112,7 @@ class ActualizarEstudiante:
         # Crear una ventana de confirmacion
         ventana_confirmacion = ctk.CTkToplevel(self.root)
         ventana_confirmacion.title(titulo)
-        ventana_confirmacion.geometry("300x150")
+        ventana_confirmacion.geometry("500x350")
         ventana_confirmacion.resizable(False, False)    
             # Configurar el tema de la ventana      
         ctk.set_appearance_mode(self.tema_actual)
@@ -119,11 +122,11 @@ class ActualizarEstudiante:
 
             # Crear el mensaje
         label_mensaje = ctk.CTkLabel(ventana_confirmacion, text=mensaje, font=ctk.CTkFont(size=12))
-        label_mensaje.pack(pady=20)
+        label_mensaje.pack(pady=10)
 
             # Crear frame para los botones
         frame_botones = ctk.CTkFrame(ventana_confirmacion)
-        frame_botones.pack(pady=20)
+        frame_botones.pack(pady=10)
 
             # Crear boton si
         btn_si = ctk.CTkButton(frame_botones, text="Si", command=lambda: [respuesta.__setitem__(0, True), ventana_confirmacion.destroy()])
@@ -157,7 +160,7 @@ class ActualizarEstudiante:
             # Crear ventana de actualizacion
         ventana_actualizacion = ctk.CTkToplevel(self.root)
         ventana_actualizacion.title("Actualizar Estudiante")
-        ventana_actualizacion.geometry("300x200")
+        ventana_actualizacion.geometry("320x500")
         ventana_actualizacion.resizable(False, False)
 
             # Configurar el tema de la ventana
@@ -165,46 +168,46 @@ class ActualizarEstudiante:
 
             # Crear el formulario de actualizacion
         frame_campos = ctk.CTkFrame(ventana_actualizacion)
-        frame_campos.pack(pady=20, padx=20, expand=True, fill="both")
+        frame_campos.pack(pady=10, padx=10, expand=True, fill="both")
 
             # Crear etiquetas y campos de entrada
         lbl_nombre = ctk.CTkLabel(frame_campos, text="Nombre:")
-        lbl_nombre.pack(pady=10)
+        lbl_nombre.pack(pady=5)
         self.entry_nombre = ctk.CTkEntry(frame_campos)
         self.entry_nombre.insert(0, nombre)
-        self.entry_nombre.pack(pady=10)
+        self.entry_nombre.pack(pady=5)
 
             # Campo de apellido
         lbl_apellido = ctk.CTkLabel(frame_campos, text="Apellido:")
-        lbl_apellido.pack(pady=10)
+        lbl_apellido.pack(pady=5)
         self.entry_apellido = ctk.CTkEntry(frame_campos)
         self.entry_apellido.insert(0, apellido)
-        self.entry_apellido.pack(pady=10)
+        self.entry_apellido.pack(pady=5)
 
             # Campo de correo
         lbl_correo = ctk.CTkLabel(frame_campos, text="Correo:")
-        lbl_correo.pack(pady=10)
+        lbl_correo.pack(pady=5)
         self.entry_correo = ctk.CTkEntry(frame_campos)
         self.entry_correo.insert(0, correo)
-        self.entry_correo.pack(pady=10)
+        self.entry_correo.pack(pady=5)
 
             # Campo de telefono
         lbl_telefono = ctk.CTkLabel(frame_campos, text="Telefono:")
-        lbl_telefono.pack(pady=10)
+        lbl_telefono.pack(pady=5)
         self.entry_telefono = ctk.CTkEntry(frame_campos)
         self.entry_telefono.insert(0, telefono)
-        self.entry_telefono.pack(pady=10)
+        self.entry_telefono.pack(pady=5)
 
             # Frame para los botones
         frame_botones = ctk.CTkFrame(ventana_actualizacion)
-        frame_botones.pack(pady=20)
+        frame_botones.pack(pady=10)
 
             # Boton para guardar cambios
-        btn_guardar = ctk.CTkButton(frame_botones, text="Guardar", command=lambda: self.guardar_cambios(id_estudiante, nombre, apellido, correo, telefono))
-        btn_guardar.pack(side="left", padx=10)
+        btn_guardar = ctk.CTkButton(frame_botones, text="Guardar", command=lambda: self.guardar_cambios(id_estudiante, ventana_actualizacion))
+        btn_guardar.pack(side="left", padx=5)
           # Boton para cancelar
         btn_cancelar = ctk.CTkButton(frame_botones, text="Cancelar", command=ventana_actualizacion.destroy)
-        btn_cancelar.pack(side="left", padx=10)
+        btn_cancelar.pack(side="left", padx=5)
 
             # Hacer que la ventana sea modal
         ventana_actualizacion.transient(self.root)
