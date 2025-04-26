@@ -1,5 +1,5 @@
 from controllers.curso_controller import CursoController
-from controllers.profersor_controller import ProfesorController
+from academia.controllers.profesor_controller import ProfesorController
 from mysql.connector import IntegrityError
 
 def menu_curso(db):

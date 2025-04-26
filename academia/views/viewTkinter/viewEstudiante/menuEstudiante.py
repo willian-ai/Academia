@@ -11,16 +11,16 @@ class MenuEstudiante:
         ctk.set_appearance_mode(tema_actual)
 
         # Configuracion de cierre de la ventana
-        self.root.protocol("WM_DELETE_WINDOW", self.cerrar_ventana)
+        self.root.protocol("WM_DELETE_WINDOW", self.regresar_menu_principal)
 
         # Obtener el ancho y alto de la pantalla
         ancho_pantalla = self.root.winfo_screenwidth()
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.8)
-        alto_ventana = int(alto_pantalla * 0.8)
-        self.root.geometry(f"{ancho_pantalla}x{alto_pantalla}")
+        ancho_ventana = int(ancho_pantalla * 0.3)
+        alto_ventana = int(alto_pantalla * 0.45)
+        self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
       # Configuracion de restricciones de la ventana
         self.root.resizable(False, False)
@@ -63,14 +63,14 @@ class MenuEstudiante:
 
     def cambiar_tema(self):
         if self.tema_actual == "Light":
-            self.set_appearance_mode("Dark")
+            ctk.set_appearance_mode("Dark")
             self.tema_actual = "Dark"
         else:
-            self.set_appearance_mode("Light")
+            ctk.set_appearance_mode("Light")
             self.tema_actual = "Light"
         
     def listar_estudiantes(self):
-        from views.viewTkinter.viewEstudiante.listarEstudiantes import ListarEstudiantes
+        from views.viewTkinter.viewEstudiante.listarEstudiante import ListarEstudiantes
         listar_estudiantes = ListarEstudiantes(self.db, tema_actual=self.tema_actual)
         listar_estudiantes.root.mainloop()
         

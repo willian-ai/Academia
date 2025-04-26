@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox # Importar ttk para crear tablas y messagebox para mostrar mensajes
-from controllers.controllerEstudiante import EstudianteController
+from controllers.estudiante_controller import EstudianteController
 from mysql.connector import IntegrityError
 
 class ListarEstudiantes:
@@ -8,7 +8,7 @@ class ListarEstudiantes:
         self.db = db
         self.root = ctk.CTk()
         self.root.title("Listar Estudiantes")
-        self.estudiante_controller = EstudianteController(self.db)
+        self.estudiante_controller = EstudianteController(db)
 
         # Configuracion de la ventana
         ctk.set_appearance_mode(tema_actual)
@@ -19,8 +19,8 @@ class ListarEstudiantes:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.8)   
-        alto_ventana = int(alto_pantalla * 0.8)
+        ancho_ventana = int(ancho_pantalla * 0.4)   
+        alto_ventana = int(alto_pantalla * 0.4)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
         
         # Configuracion de restricciones de la ventana
@@ -55,22 +55,22 @@ class ListarEstudiantes:
         # Cargar los datos de la tabla
         self.cargar_datos_tabla()
 
-        def cargar_datos_tabla(self):
-            try:
-                # Obtener los datos de la tabla
-                estudiantes = self.estudiante_controller.obtener_todos_estudiantes()
+    def cargar_datos_tabla(self):
+        try:
+               # Obtener los datos de la tabla
+            estudiantes = self.estudiante_controller.listar_estudiantes()
 
                 # Limpiar la tabla antes de cargar los datos
-                for row in self.tabla.get_children():
-                    self.tabla.delete(row)
-                
+            for row in self.tabla.get_children():
+                self.tabla.delete(row)
+               
 
                 # Insertar los datos en la tabla
-                for estudiante in estudiantes:
-                    self.tabla.insert("", "end", values=(estudiante.id_estudiante, estudiante.nombre, estudiante.apellido, estudiante.correo, estudiante.telefono))
+            for estudiante in estudiantes:
+                self.tabla.insert("", "end", values=(estudiante.id_estudiante, estudiante.nombre, estudiante.apellido, estudiante.correo, estudiante.telefono))
                 
-            except IntegrityError as e:
-                messagebox.showerror("Error", f"Error al cargar los datos de la tabla: {e}")
+        except IntegrityError as e:
+            print(f"Error al cargar los datos de la tabla: {e}")
 
     def regresar_menu_principal(self):
         from views.viewTkinter.menuPrincipal import MenuPrincipal

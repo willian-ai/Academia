@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from controllers.estudianteController import EstudianteController
+from controllers.estudiante_controller import EstudianteController
 from mysql.connector import IntegrityError
 import re
 
@@ -19,8 +19,8 @@ class RegistrarEstudiante:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.8)
-        alto_ventana = int(alto_pantalla * 0.8)
+        ancho_ventana = int(ancho_pantalla * 0.3)
+        alto_ventana = int(alto_pantalla * 0.45)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}") 
         
         # Configuracion de restricciones de la ventana
@@ -55,13 +55,13 @@ class RegistrarEstudiante:
         self.boton_regresar.pack(pady=10)
 
     def regresar_menu_principal(self):
-        from views.viewTkinter.viewMenu.menuPrincipal import MenuPrincipal
+        from views.viewTkinter.menuPrincipal import MenuPrincipal
         self.root.destroy()
         menu_principal = MenuPrincipal(self.tema_actual)
         menu_principal.root.mainloop()
         
     def registrar_estudiante(self):
-        from views.viewTkinter.viewMenu.menuPrincipal import MenuPrincipal
+        from views.viewTkinter.menuPrincipal import MenuPrincipal
         nombre = self.nombre.get()
         apellido = self.apellido.get()
         correo = self.correo.get()
@@ -72,15 +72,15 @@ class RegistrarEstudiante:
         
         try:
             self.estudiante_controller.registrar_estudiante(nombre, apellido, correo, telefono)
-            self.mostrar_mensaje("Exito", "Estudiante registrado correctamente")
+            self.mostrar_mensaje(mensaje="Estudiante registrado correctamente")
             self.root.destroy()
             menu_principal = MenuPrincipal(self.tema_actual, self.db)
             menu_principal.root.mainloop()
         except IntegrityError as e:
-            self.mostrar_mensaje("Error", "Error al registrar el estudiante")
+            self.mostrar_mensaje(mensaje="Error al registrar el estudiante")
             print(f"Error al registrar el estudiante: {e}")
         except Exception as e:
-            self.mostrar_mensaje("Error", "Error al registrar el estudiante")
+            self.mostrar_mensaje(mensaje="Error al registrar el estudiante")
             print(f"Error al registrar el estudiante: {e}")
 
     def notificacion(self, titulo, mensaje=""):

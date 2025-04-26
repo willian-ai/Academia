@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox # Importar ttk para crear tablas y messagebox para mostrar mensajes
-from controllers.controllerEstudiante import EstudianteController
+from controllers.estudiante_controller import EstudianteController
 from mysql.connector import IntegrityError
 
 class EliminarEstudiante:
@@ -9,7 +9,7 @@ class EliminarEstudiante:
         self.tema_actual = tema_actual
         self.root = ctk.CTk()
         self.root.title("Eliminar Estudiante")
-        self.estudiante_controller = EstudianteController(self.db)
+        self.estudiante_controller = EstudianteController(db)
 
         # Configuracion de la ventana
         ctk.set_appearance_mode(tema_actual)
@@ -19,8 +19,8 @@ class EliminarEstudiante:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana   
-        ancho_ventana = int(ancho_pantalla * 0.8)
-        alto_ventana = int(alto_pantalla * 0.8)
+        ancho_ventana = int(ancho_pantalla * 0.4)
+        alto_ventana = int(alto_pantalla * 0.4)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         # Configuracion de restricciones de la ventana
@@ -78,7 +78,7 @@ class EliminarEstudiante:
                     self.tabla.insert("", "end", values=(estudiante.id_estudiante, estudiante.nombre, estudiante.apellido, estudiante.correo, estudiante.telefono))
                 
             except IntegrityError as e:
-                messagebox.showerror("Error", f"Error al cargar los datos de la tabla: {e}")
+                print(f"Error al cargar los datos de la tabla: {e}")
     
     def mostrar_mensaje(self, titulo, mensaje, tipo="info"):
         # Crear una ventana de mensaje personalizado
@@ -103,76 +103,76 @@ class EliminarEstudiante:
         ventana_mensaje.grab_set()
         self.root.wait_window(ventana_mensaje)
 
-        def mostrar_confirmacion(self, titulo, mensaje):
-            # Crear una ventana de confirmacion
-            ventana_confirmacion = ctk.CTkToplevel(self.root)
-            ventana_confirmacion.title(titulo)
-            ventana_confirmacion.geometry("300x150")
-            ventana_confirmacion.resizable(False, False)
+    def mostrar_confirmacion(self, titulo, mensaje):
+        # Crear una ventana de confirmacion
+        ventana_confirmacion = ctk.CTkToplevel(self.root)
+        ventana_confirmacion.title(titulo)
+        ventana_confirmacion.geometry("300x150")
+        ventana_confirmacion.resizable(False, False)
             
             # Configurar el tema de la ventana
-            ctk.set_appearance_mode(self.tema_actual)
+        ctk.set_appearance_mode(self.tema_actual)
 
             # Variable para almacenar la respuesta
-            respuesta = [False]
+        respuesta = [False]
 
 
             # Crear el mensaje
-            label_mensaje = ctk.CTkLabel(ventana_confirmacion, text=mensaje, font=ctk.CTkFont(size=12))
-            label_mensaje.pack(pady=20)
+        label_mensaje = ctk.CTkLabel(ventana_confirmacion, text=mensaje, font=ctk.CTkFont(size=12))
+        label_mensaje.pack(pady=20)
 
             # Crear frame para los botones
-            frame_botones = ctk.CTkFrame(ventana_confirmacion)
-            frame_botones.pack(pady=20)
+        frame_botones = ctk.CTkFrame(ventana_confirmacion)
+        frame_botones.pack(pady=20)
 
             # Crear boton si 
-            btn_si = ctk.CTkButton(frame_botones, text="Si", command=lambda: [respuesta.__setitem__(0, True), ventana_confirmacion.destroy()])
-            btn_si.pack(side="left", padx=10)
+        btn_si = ctk.CTkButton(frame_botones, text="Si", command=lambda: [respuesta.__setitem__(0, True), ventana_confirmacion.destroy()])
+        btn_si.pack(side="left", padx=10)
 
             # Crear boton no
-            btn_no = ctk.CTkButton(frame_botones, text="No", command=ventana_confirmacion.destroy)
-            btn_no.pack(side="left", padx=10)
+        btn_no = ctk.CTkButton(frame_botones, text="No", command=ventana_confirmacion.destroy)
+        btn_no.pack(side="left", padx=10)
 
             # Configurar la ventana para que sea modal
-            ventana_confirmacion.transient(self.root)
-            ventana_confirmacion.grab_set()
-            self.root.wait_window(ventana_confirmacion)
+        ventana_confirmacion.transient(self.root)
+        ventana_confirmacion.grab_set()
+        self.root.wait_window(ventana_confirmacion)
 
-            return respuesta[0]
+        return respuesta[0]
         
-        def eliminar_estudiante(self):
+    def eliminar_estudiante(self):
             # Obtener el ID del estudiante seleccionado
-            seleccion = self.tabla.selection()
-            if not seleccion:
-                self.mostrar_mensaje("Advertencia", "Por favor seleccione un estudiante para eliminar", "warning")
-                return
+        seleccion = self.tabla.selection()
+        if not seleccion:
+            self.mostrar_mensaje("Advertencia", "Por favor seleccione un estudiante para eliminar", "warning")
+            return
             
             # Obtener el ID del estudiante seleccionado
-            item = self.tabla.item(seleccion[0])
-            id_estudiante = item["values"][0]
-            nombre = item["values"][1]
-            apellido = item["values"][2]
-            correo = item["values"][3]
-            telefono = item["values"][4]
+        item = self.tabla.item(seleccion[0])
+        id_estudiante = item["values"][0]
+        nombre = item["values"][1]
+        apellido = item["values"][2]
+        correo = item["values"][3]
+        telefono = item["values"][4]
 
             # Mostrar la confirmacion
-            confirmacion = self.mostrar_confirmacion(
-                "Confirmar Eliminacion", 
-                f"¿Está seguro de querer eliminar el estudiante {nombre} {apellido}?")
+        confirmacion = self.mostrar_confirmacion(
+           "Confirmar Eliminacion", 
+            f"¿Está seguro de querer eliminar el estudiante {nombre} {apellido}?")
             
-            if self.mostrar_confirmacion:
-                try:
-                    self.estudiante_controller.eliminar_estudiante(id_estudiante)
-                    self.mostrar_mensaje("Eliminacion Exitosa", f"El estudiante {nombre} {apellido} ha sido eliminado correctamente")
-                    self.cargar_datos_tabla()
-                except Exception as e:
-                    self.mostrar_mensaje("Error", f"Error al eliminar el estudiante: {str(e)}", "error")
+        if confirmacion:
+            try:
+                self.estudiante_controller.eliminar_estudiante(id_estudiante)
+                self.mostrar_mensaje("Eliminacion Exitosa", f"El estudiante {nombre} {apellido} ha sido eliminado correctamente")
+                self.cargar_datos_tabla()
+            except Exception as e:
+                self.mostrar_mensaje("Error", f"Error al eliminar el estudiante: {str(e)}", "error")
             
-            def regresar_menu_principal(self):
-                from views.viewTkinter.menuPrincipal import MenuPrincipal
-                self.root.destroy()
-                MenuPrincipal = MenuPrincipal(db = self.db, tema_actual = self.tema_actual)
-                MenuPrincipal.root.mainloop()
+    def regresar_menu_principal(self):
+        from views.viewTkinter.menuPrincipal import MenuPrincipal
+        self.root.destroy()
+        MenuPrincipal = MenuPrincipal(db = self.db, tema_actual = self.tema_actual)
+        MenuPrincipal.root.mainloop()
                 
                 
             
