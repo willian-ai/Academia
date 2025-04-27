@@ -1,0 +1,184 @@
+import customtkinter as ctk
+from tkinter import ttk, messagebox
+from controllers.profesor_controller import ProfesorController
+from mysql.connector import IntegrityError
+
+class EliminarProfesor:
+    def __init__(self, db = None, tema_actual = "System"):
+        self.db = db
+        self.tema_actual = tema_actual
+        self.root = ctk.CTk()
+        self.root.title("Eliminar Profesor")
+        self.profesor_controller = ProfesorController(db)
+
+        # Configuracion de la ventana
+        ctk.set_appearance_mode(tema_actual)
+
+        # Obtener el ancho y alto de la pantalla
+        ancho_pantalla = self.root.winfo_screenwidth()
+        alto_pantalla = self.root.winfo_screenheight()
+
+        # Asignar el tamaño de la ventana   
+        ancho_ventana = int(ancho_pantalla * 0.8)
+        alto_ventana = int(alto_pantalla * 0.8)
+        self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
+
+        # Configuracion de restricciones de la ventana
+        self.root.resizable(False, False)
+
+        # Titulo de la ventana
+        self.titulo = ctk.CTkLabel(self.root, text="Eliminar Profesor", font=("Arial", 16))
+        self.titulo.pack(pady=10)
+
+        # Crear un frame para la tabla
+        self.frame_tabla = ctk.CTkFrame(self.root)
+        self.frame_tabla.pack(pady=10)
+
+        # Crear el Treeview
+        self.tabla = ttk.Treeview(self.frame_tabla, columns=("ID", "Nombre", "Apellido", "Correo", "Telefono", "Especialidad"), show="headings")
+        self.tabla.pack(expand=True, fill="both")
+
+        # Configurar las columnas
+        self.tabla.heading("ID", text="ID Profesor")
+        self.tabla.heading("Nombre", text="Nombre")
+        self.tabla.heading("Apellido", text="Apellido")
+        self.tabla.heading("Correo", text="Correo")
+        self.tabla.heading("Telefono", text="Telefono")
+        self.tabla.heading("Especialidad", text="Especialidad")
+
+        # Ajustar el ancho de las columnas
+        self.tabla.column("ID", width=100)
+        self.tabla.column("Nombre", width=150)
+        self.tabla.column("Apellido", width=150)
+        self.tabla.column("Correo", width=200)
+        self.tabla.column("Telefono", width=120)
+        self.tabla.column("Especialidad", width=150)
+
+        # Cargar los datos de la tabla
+        self.frame_botones = ctk.CTkFrame(self.root)
+        self.frame_botones.pack(pady=20)
+
+        # Botones para eliminar profesor
+        self.btn_eliminar = ctk.CTkButton(self.frame_botones, text="Eliminar", command=self.eliminar_profesor)
+        self.btn_eliminar.pack(side="left", padx=5)
+
+        # Botones para regresar al menu principal
+        self.btn_regresar = ctk.CTkButton(self.frame_botones, text="Regresar", command=self.regresar_menu_principal)
+        self.btn_regresar.pack(side="left", padx=5)
+
+        # Cargar los datos de la tabla al iniciar
+        self.cargar_datos_tabla()
+
+    def cargar_datos_tabla(self):
+        try:
+            # Obtener los datos de la tabla
+            profesores = self.profesor_controller.listar_profesores()
+
+            # Limpiar la tabla antes de cargar los datos
+            for row in self.tabla.get_children():
+                self.tabla.delete(row)  
+                
+            # Insertar los datos en la tabla
+            for profesor in profesores:
+                self.tabla.insert("", "end", values=(
+                    profesor.id_profesor, 
+                    profesor.nombre, 
+                    profesor.apellido, 
+                    profesor.correo, 
+                    profesor.telefono,
+                    profesor.especialidad
+                ))
+                
+        except IntegrityError as e:
+            print(f"Error al cargar los datos de la tabla: {e}")
+    
+    def mostrar_mensaje(self, titulo, mensaje, tipo="info"):
+        # Crear una ventana de mensaje personalizado
+        ventana_mensaje = ctk.CTkToplevel(self.root)
+        ventana_mensaje.title(titulo)
+        ventana_mensaje.geometry("300x150")
+        ventana_mensaje.resizable(False, False)
+        
+        # Configurar el tema de la ventana sea modal
+        ctk.set_appearance_mode(self.tema_actual)
+
+        # Crear el mensaje
+        label_mensaje = ctk.CTkLabel(ventana_mensaje, text=mensaje, font=ctk.CTkFont(size=12))
+        label_mensaje.pack(pady=20)
+
+        # Crear boton aceptar
+        btn_aceptar = ctk.CTkButton(ventana_mensaje, text="Aceptar", command=ventana_mensaje.destroy)
+        btn_aceptar.pack(pady=10)
+
+        # Configurar la ventana para que sea modal
+        ventana_mensaje.transient(self.root)
+        ventana_mensaje.grab_set()
+        self.root.wait_window(ventana_mensaje)
+
+    def mostrar_confirmacion(self, titulo, mensaje):
+        # Crear una ventana de confirmacion
+        ventana_confirmacion = ctk.CTkToplevel(self.root)
+        ventana_confirmacion.title(titulo)
+        ventana_confirmacion.geometry("300x150")
+        ventana_confirmacion.resizable(False, False)
+            
+        # Configurar el tema de la ventana
+        ctk.set_appearance_mode(self.tema_actual)
+
+        # Variable para almacenar la respuesta
+        respuesta = [False]
+
+        # Crear el mensaje
+        label_mensaje = ctk.CTkLabel(ventana_confirmacion, text=mensaje, font=ctk.CTkFont(size=12))
+        label_mensaje.pack(pady=20)
+
+        # Crear frame para los botones
+        frame_botones = ctk.CTkFrame(ventana_confirmacion)
+        frame_botones.pack(pady=10)
+
+        # Crear boton si 
+        btn_si = ctk.CTkButton(frame_botones, text="Si", command=lambda: [respuesta.__setitem__(0, True), ventana_confirmacion.destroy()])
+        btn_si.pack(side="left", padx=5)
+
+        # Crear boton no
+        btn_no = ctk.CTkButton(frame_botones, text="No", command=ventana_confirmacion.destroy)
+        btn_no.pack(side="left", padx=5)
+
+        # Configurar la ventana para que sea modal
+        ventana_confirmacion.transient(self.root)
+        ventana_confirmacion.grab_set()
+        self.root.wait_window(ventana_confirmacion)
+
+        return respuesta[0]
+        
+    def eliminar_profesor(self):
+        # Obtener el ID del profesor seleccionado
+        seleccion = self.tabla.selection()
+        if not seleccion:
+            self.mostrar_mensaje("Advertencia", "Por favor seleccione un profesor para eliminar", "warning")
+            return
+            
+        # Obtener el ID del profesor seleccionado
+        item = self.tabla.item(seleccion[0])
+        id_profesor = item["values"][0]
+        nombre = item["values"][1]
+        apellido = item["values"][2]
+        
+        # Mostrar la confirmacion
+        confirmacion = self.mostrar_confirmacion(
+            "Confirmar Eliminacion", 
+            f"¿Está seguro de querer eliminar al profesor {nombre} {apellido}?")
+            
+        if confirmacion:
+            try:
+                self.profesor_controller.eliminar_profesor(id_profesor)
+                self.mostrar_mensaje("Eliminacion Exitosa", "El profesor ha sido eliminado correctamente", "info")
+                self.cargar_datos_tabla()
+            except Exception as e:
+                self.mostrar_mensaje("Error", f"Error al eliminar el profesor: {str(e)}", "error")
+            
+    def regresar_menu_principal(self):
+        from views.viewTkinter.menuPrincipal import MenuPrincipal
+        self.root.destroy()
+        MenuPrincipal = MenuPrincipal(db = self.db, tema_actual = self.tema_actual)
+        MenuPrincipal.root.mainloop()
