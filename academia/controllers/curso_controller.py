@@ -16,7 +16,7 @@ class CursoController:
             profesor_nombre (str): El nombre del profesor que imparte el curso.
         """
         sql = """
-            INSERT INTO cursos (nombre, descripcion, duracion_horas, id_profesor)
+            INSERT INTO cursos (nombre, descripcion, duracion_horas, profesor_id)
             VALUES (%s, %s, %s, %s)
         """
         params = (nombre, descripcion, duracion_hrs, id_profesor)
@@ -68,7 +68,7 @@ class CursoController:
             id_profesor (int): El nuevo ID del profesor que imparte el curso.
         """
         sql = """
-            UPDATE Cursos SET nombre = %s, descripcion = %s, duracion_horas = %s, id_profesor = %s 
+            UPDATE Cursos SET nombre = %s, descripcion = %s, duracion_horas = %s, profesor_id = %s 
             WHERE id_curso = %s
         """
         params = (nombre, descripcion, duracion_hrs, id_profesor, id_curso)

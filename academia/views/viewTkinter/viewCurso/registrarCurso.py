@@ -30,7 +30,7 @@ class RegistrarCurso:
         self.titulo.pack(pady=20)
 
         # Campo de nombre del curso
-        self.nombre = ctk.CTkEntry(self.root, placeholder_text="Nombre del Curso")
+        self.nombre = ctk.CTkEntry(self.root, placeholder_text="Nombre")
         self.nombre.pack(pady=10)
 
         # Campo de descripción
@@ -42,8 +42,8 @@ class RegistrarCurso:
         self.duracion.pack(pady=10)
 
         # Campo de ID del profesor
-        self.id_profesor = ctk.CTkEntry(self.root, placeholder_text="ID del Profesor")
-        self.id_profesor.pack(pady=10)
+        self.profesor_id = ctk.CTkEntry(self.root, placeholder_text="ID del Profesor")
+        self.profesor_id.pack(pady=10)
 
         # Boton para registrar
         self.boton_registrar = ctk.CTkButton(self.root, text="Registrar", command=self.registrar_curso)
@@ -64,31 +64,31 @@ class RegistrarCurso:
         nombre = self.nombre.get()
         descripcion = self.descripcion.get()
         duracion = self.duracion.get()
-        id_profesor = self.id_profesor.get()
+        profesor_id = self.profesor_id.get()
 
         if not self.validar_campos():
             return
 
         try:
-            self.curso_controller.registrar_curso(nombre, descripcion, duracion, id_profesor)
+            self.curso_controller.registrar_curso(nombre, descripcion, duracion, profesor_id)
             self.notificacion(mensaje="Curso registrado correctamente")
             self.root.destroy()
-            menu_principal = MenuPrincipal(self.tema_actual)
+            menu_principal = MenuPrincipal(self.tema_actual, self.db)
             menu_principal.root.mainloop()
         except IntegrityError as e:
             self.notificacion(mensaje="Error al registrar el curso")
-            print(f"Error al registrar el curso: {e}")
+            print(f"Error al registrar el curso: {e.msg}")
         except Exception as e:
             self.notificacion(mensaje="Error al registrar el curso")
             print(f"Error al registrar el curso: {e}")
 
     def validar_campos(self):
-        if not self.nombre.get() or not self.descripcion.get() or not self.duracion.get() or not self.id_profesor.get():
+        if not self.nombre.get() or not self.descripcion.get() or not self.duracion.get() or not self.profesor_id.get():
             self.notificacion(mensaje="Por favor complete todos los campos")
             return False
         try:
             int(self.duracion.get())
-            int(self.id_profesor.get())
+            int(self.profesor_id.get())
         except ValueError:
             self.notificacion(mensaje="La duración y el ID del profesor deben ser números")
             return False
@@ -97,7 +97,7 @@ class RegistrarCurso:
     def notificacion(self, mensaje=""):
         ventana_notificacion = ctk.CTk()
         ventana_notificacion.title("Notificación")
-        ventana_notificacion.geometry("300x100")
+        ventana_notificacion.geometry("300x150")
         ventana_notificacion.resizable(False, False)
 
         label_notificacion = ctk.CTkLabel(ventana_notificacion, text=mensaje, font=("Helvetica", 16))

@@ -2,10 +2,12 @@ import customtkinter as ctk
 from tkinter import ttk, messagebox
 from controllers.curso_controller import CursoController
 from mysql.connector import IntegrityError
+import re
 
 class ActualizarCurso:
     def __init__(self, db=None, tema_actual="System"):
         self.db = db
+        self.tema_actual = tema_actual
         self.root = ctk.CTk()
         self.root.title("Actualizar Curso")
         self.curso_controller = CursoController(db)
@@ -18,23 +20,23 @@ class ActualizarCurso:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.8)
-        alto_ventana = int(alto_pantalla * 0.8)
+        ancho_ventana = int(ancho_pantalla * 0.7)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         # Configuracion de restricciones de la ventana
         self.root.resizable(False, False)
 
         # Titulo de la ventana
-        self.titulo_ventana = ctk.CTkLabel(self.root, text="Actualizar Curso", font=ctk.CTkFont(size=20, weight="bold"))
-        self.titulo_ventana.pack(pady=20)
+        self.titulo_ventana = ctk.CTkLabel(self.root, text="Actualizar Curso", font=("Arial", 20, "bold"))
+        self.titulo_ventana.pack(pady=10)
 
         # Crear un frame para la tabla
         self.frame_tabla = ctk.CTkFrame(self.root)
-        self.frame_tabla.pack(pady=20)
+        self.frame_tabla.pack(pady=10)
 
         # Crear el Treeview
-        self.tabla = ttk.Treeview(self.frame_tabla, columns=("ID", "Nombre", "Descripción", "Duración", "ID Profesor"), show="headings")
+        self.tabla = ttk.Treeview(self.frame_tabla, columns=("ID", "Nombre", "Descripción", "Duración", "Profesor"), show="headings")
         self.tabla.pack(expand=True, fill="both")
 
         # Configurar las columnas
@@ -42,14 +44,14 @@ class ActualizarCurso:
         self.tabla.heading("Nombre", text="Nombre")
         self.tabla.heading("Descripción", text="Descripción")
         self.tabla.heading("Duración", text="Duración (horas)")
-        self.tabla.heading("ID Profesor", text="ID Profesor")
+        self.tabla.heading("Profesor", text="Profesor")
 
         # Ajustar el ancho de las columnas
         self.tabla.column("ID", width=100)
         self.tabla.column("Nombre", width=150)
-        self.tabla.column("Descripción", width=200)
+        self.tabla.column("Descripción", width=250)
         self.tabla.column("Duración", width=100)
-        self.tabla.column("ID Profesor", width=100)
+        self.tabla.column("Profesor", width=100)
 
         # Frame para los botones
         self.frame_botones = ctk.CTkFrame(self.root)
@@ -57,11 +59,11 @@ class ActualizarCurso:
 
         # Botón para actualizar
         self.btn_actualizar = ctk.CTkButton(self.frame_botones, text="Actualizar", command=self.actualizar_curso)
-        self.btn_actualizar.pack(side="left", padx=10)
+        self.btn_actualizar.pack(side="left", padx=5)
 
         # Botón para regresar
         self.btn_regresar = ctk.CTkButton(self.frame_botones, text="Regresar", command=self.regresar_menu_principal)
-        self.btn_regresar.pack(side="left", padx=10)
+        self.btn_regresar.pack(side="left", padx=5)
 
         # Cargar los datos de la tabla
         self.cargar_datos_tabla()
@@ -88,7 +90,7 @@ class ActualizarCurso:
             print(f"Error al cargar los datos de la tabla: {e}")
 
     def mostrar_mensaje(self, titulo, mensaje, tipo="info"):
-        ventana_mensaje = ctk.CTkTopLevel()
+        ventana_mensaje = ctk.CTkToplevel(self.root)
         ventana_mensaje.title(titulo)
         ventana_mensaje.geometry("300x150")
         ventana_mensaje.resizable(False, False)
@@ -109,7 +111,7 @@ class ActualizarCurso:
 
     def mostrar_confirmacion(self, titulo, mensaje):
         # Crear una ventana de confirmación personalizada
-        ventana_confirmacion = ctk.CTkTopLevel()
+        ventana_confirmacion = ctk.CTkToplevel(self.root)
         ventana_confirmacion.title(titulo)
         ventana_confirmacion.geometry("350x150")
         ventana_confirmacion.resizable(False, False)
@@ -118,13 +120,17 @@ class ActualizarCurso:
         respuesta = [False]
         label_mensaje = ctk.CTkLabel(ventana_confirmacion, text=mensaje, font=("Arial", 12))
         label_mensaje.pack(pady=20)
+         
+        # Crear frame para los botones
+        frame_botones = ctk.CTkFrame(ventana_confirmacion)
+        frame_botones.pack(pady=10)
 
         # Crear botones
-        btn_si = ctk.CTkButton(ventana_confirmacion, text="Si", command=lambda: [respuesta.__setitem__(0, True), ventana_confirmacion.destroy()])
-        btn_si.pack(side="left", padx=10)
+        btn_si = ctk.CTkButton(frame_botones, text="Si", command=lambda: [respuesta.__setitem__(0, True), ventana_confirmacion.destroy()], width=100)
+        btn_si.pack(side="left", padx=5)
 
-        btn_no = ctk.CTkButton(ventana_confirmacion, text="No", command= ventana_confirmacion.destroy)
-        btn_no.pack(side="left", padx=10)
+        btn_no = ctk.CTkButton(frame_botones, text="No", command=ventana_confirmacion.destroy, width=100)
+        btn_no.pack(side="left", padx=5)
         # Hacer que la ventana sea modal
         ventana_confirmacion.transient(self.root)
         ventana_confirmacion.grab_set()
@@ -147,10 +153,10 @@ class ActualizarCurso:
         nombre_actual = item["values"][1]
         descripcion_actual = item["values"][2]
         duracion_actual = item["values"][3]
-        id_profesor_actual = item["values"][4]
+        profesor_actual = item["values"][4]
 
         # Crear ventana de actualización
-        ventana_actualizacion = ctk.CTk()
+        ventana_actualizacion = ctk.CTkToplevel(self.root)
         ventana_actualizacion.title("Actualizar Curso")
         ventana_actualizacion.geometry("400x450")
         ventana_actualizacion.resizable(False, False)
@@ -187,12 +193,12 @@ class ActualizarCurso:
         self.entry_duracion.pack(pady=5)
 
         # Campo para el ID del profesor
-        label_id_profesor = ctk.CTkLabel(frame_campos, text="ID Profesor: ")
-        label_id_profesor.pack(pady=5)
+        label_profesor = ctk.CTkLabel(frame_campos, text="Profesor: ")
+        label_profesor.pack(pady=5)
 
-        self.entry_id_profesor = ctk.CTkEntry(frame_campos)
-        self.entry_id_profesor.insert(0, id_profesor_actual)
-        self.entry_id_profesor.pack(pady=5)
+        self.entry_profesor = ctk.CTkEntry(frame_campos)
+        self.entry_profesor.insert(0, profesor_actual)
+        self.entry_profesor.pack(pady=5)
 
         # Frame para los botones
         frame_botones = ctk.CTkFrame(ventana_actualizacion)
@@ -203,28 +209,34 @@ class ActualizarCurso:
                                   command=lambda: self.guardar_cambios(id_curso, ventana_actualizacion))
         btn_guardar.pack(side="left", padx=5)
 
-        #Hacer que la ventana sea modal
+        # Botón para cancelar   
+        btn_cancelar = ctk.CTkButton(frame_botones, text="Cancelar", command=ventana_actualizacion.destroy)
+        btn_cancelar.pack(side="left", padx=5)
+
+        # Hacer que la ventana sea modal
         ventana_actualizacion.transient(self.root)
         ventana_actualizacion.grab_set()
         self.root.wait_window(ventana_actualizacion)
 
        
 
-    def guardar_cambios(self, id_curso, ventana_actualizacion):
+    def guardar_cambios(self, id_curso, ventana):
         # Obtener los nuevos valores
         nuevo_nombre = self.entry_nombre.get()
         nueva_descripcion = self.entry_descripcion.get()
         nueva_duracion = self.entry_duracion.get()
-        nuevo_id_profesor = self.entry_id_profesor.get()
+        nuevo_profesor = self.entry_profesor.get()
 
         # Validar campos
-        if not nuevo_nombre or not nueva_descripcion or not nueva_duracion or not nuevo_id_profesor:
+        if not nuevo_nombre or not nueva_descripcion or not nueva_duracion or not nuevo_profesor:
             self.mostrar_mensaje("Error", "Por favor complete todos los campos", "error")
             return
 
         try:
-            int(nueva_duracion)
-            int(nuevo_id_profesor)
+            # Convertir la duración a entero
+            nueva_duracion = int(nueva_duracion)
+            # Convertir el ID del profesor a entero
+            id_profesor = int(nuevo_profesor)
         except ValueError:
             self.mostrar_mensaje("Error", "La duración y el ID del profesor deben ser números", "error")
             return
@@ -232,10 +244,10 @@ class ActualizarCurso:
         confirmacion = self.mostrar_confirmacion("Confirmar Actualización", "¿Está seguro de querer actualizar los datos del curso?")
         if confirmacion:
             try:
-                self.curso_controller.actualizar_curso(id_curso, nuevo_nombre, nueva_descripcion, nueva_duracion, nuevo_id_profesor)
+                self.curso_controller.actualizar_curso(id_curso, nuevo_nombre, nueva_descripcion, nueva_duracion, id_profesor)
                 self.mostrar_mensaje("Éxito", "Los datos del curso se han actualizado correctamente", "success")
                 self.cargar_datos_tabla()
-                ventana_actualizacion.destroy()
+                ventana.destroy()
             except Exception as e:
                 self.mostrar_mensaje("Error", f"Error al actualizar los datos del curso: {e}", "error")
 
@@ -243,7 +255,7 @@ class ActualizarCurso:
     def regresar_menu_principal(self):
         from views.viewTkinter.menuPrincipal import MenuPrincipal
         self.root.destroy()
-        menu_principal = MenuPrincipal(self.tema_actual)
+        menu_principal = MenuPrincipal(db=self.db, tema_actual=self.tema_actual)
         menu_principal.root.mainloop() 
 
     
