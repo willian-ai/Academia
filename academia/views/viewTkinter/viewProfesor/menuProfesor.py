@@ -19,53 +19,46 @@ class MenuProfesor:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.4)
-        alto_ventana = int(alto_pantalla * 0.6)
+        ancho_ventana = int(ancho_pantalla * 0.2)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         self.root.resizable(False, False)
 
-        # Crear un frame principal para centrar los elementos
-        self.frame_principal = ctk.CTkFrame(self.root)
-        self.frame_principal.pack(expand=True, fill="both", padx=20, pady=20)
-
-        # Titulo de la ventana
-        self.titulo = ctk.CTkLabel(self.frame_principal, text="Menu Profesor", font=("Helvetica", 24, "bold"))
-        self.titulo.pack(pady=20)
         
-        # Crear un frame para los botones
-        self.frame_botones = ctk.CTkFrame(self.frame_principal)
-        self.frame_botones.pack(expand=True, fill="both", padx=20, pady=20)
-
-        # Boton para listar profesores
-        self.btn_listar_profesores = ctk.CTkButton(self.frame_botones, text="Listar Profesores", 
+        # Titulo de la ventana
+        self.titulo = ctk.CTkLabel(self.root, text="Menu Profesor", font=("Arial", 16))
+        self.titulo.pack(pady=10)
+        
+            # Boton para listar profesores
+        self.btn_listar_profesores = ctk.CTkButton(self.root, text="Listar Profesores", 
                                                   command=self.listar_profesores)
-        self.btn_listar_profesores.pack(fill="x", pady=10, padx=20)
+        self.btn_listar_profesores.pack(pady=10)
 
         # Boton para registrar un nuevo profesor
-        self.btn_registrar_profesor = ctk.CTkButton(self.frame_botones, text="Registrar Profesor", 
+        self.btn_registrar_profesor = ctk.CTkButton(self.root, text="Registrar Profesor", 
                                                    command=self.registrar_profesor)
-        self.btn_registrar_profesor.pack(fill="x", pady=10, padx=20)
+        self.btn_registrar_profesor.pack(pady=10)
 
         # Boton para actualizar un profesor
-        self.btn_actualizar_profesor = ctk.CTkButton(self.frame_botones, text="Actualizar Profesor", 
+        self.btn_actualizar_profesor = ctk.CTkButton(self.root, text="Actualizar Profesor", 
                                                     command=self.actualizar_profesor, height=40)
-        self.btn_actualizar_profesor.pack(fill="x", pady=10, padx=20)
+        self.btn_actualizar_profesor.pack(pady=10)
 
         # Boton para eliminar un profesor
-        self.btn_eliminar_profesor = ctk.CTkButton(self.frame_botones, text="Eliminar Profesor", 
+        self.btn_eliminar_profesor = ctk.CTkButton(self.root, text="Eliminar Profesor", 
                                                   command=self.eliminar_profesor)
-        self.btn_eliminar_profesor.pack(fill="x", pady=10, padx=20)
+        self.btn_eliminar_profesor.pack(pady=10)
 
         # Boton para cambiar el tema de la ventana
-        self.btn_cambiar_tema = ctk.CTkButton(self.frame_botones, text="Cambiar Tema", 
+        self.btn_cambiar_tema = ctk.CTkButton(self.root, text="Cambiar Tema", 
                                              command=self.cambiar_tema)
-        self.btn_cambiar_tema.pack(fill="x", pady=10, padx=20)
+        self.btn_cambiar_tema.pack(pady=10)
 
         # Boton para regresar al menu principal
-        self.btn_regresar = ctk.CTkButton(self.frame_botones, text="Regresar", 
+        self.btn_regresar = ctk.CTkButton(self.root, text="Regresar", 
                                          command=self.regresar_menu_principal)
-        self.btn_regresar.pack(fill="x", pady=10, padx=20)
+        self.btn_regresar.pack(pady=10)
 
     def regresar_menu_principal(self):
         from views.viewTkinter.menuPrincipal import MenuPrincipal

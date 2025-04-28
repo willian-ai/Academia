@@ -19,8 +19,8 @@ class EliminarProfesor:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana   
-        ancho_ventana = int(ancho_pantalla * 0.8)
-        alto_ventana = int(alto_pantalla * 0.8)
+        ancho_ventana = int(ancho_pantalla * 0.4)
+        alto_ventana = int(alto_pantalla * 0.4)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         # Configuracion de restricciones de la ventana

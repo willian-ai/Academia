@@ -25,7 +25,7 @@ class MenuCurso:
         self.root.resizable(False, False)
 
         # Titulo de la ventana
-        self.titulo_ventana = ctk.CTkLabel(self.root, text="Menú Curso", font=ctk.CTkFont(size=20, weight="bold"))
+        self.titulo_ventana = ctk.CTkLabel(self.root, text="Menú Curso", font=("Helvetica", 16))
         self.titulo_ventana.pack(pady=10)
 
         # Boton para cambiar el tema
@@ -69,20 +69,20 @@ class MenuCurso:
 
     def listar_cursos(self):
         from views.viewTkinter.viewCurso.listarCurso import ListarCursos
-        listar_cursos = ListarCursos(self.db, tema_actual=self.tema_actual)
+        listar_cursos = ListarCursos(db=self.db, tema_actual=self.tema_actual)
         listar_cursos.root.mainloop()
 
     def registrar_curso(self):
         from views.viewTkinter.viewCurso.registrarCurso import RegistrarCurso
-        registrar_curso = RegistrarCurso(self.db, tema_actual=self.tema_actual)
+        registrar_curso = RegistrarCurso(db=self.db, tema_actual=self.tema_actual)
         registrar_curso.root.mainloop()
 
     def actualizar_curso(self):
         from views.viewTkinter.viewCurso.actualizarCurso import ActualizarCurso
-        actualizar_curso = ActualizarCurso(self.db, tema_actual=self.tema_actual)
+        actualizar_curso = ActualizarCurso(db=self.db, tema_actual=self.tema_actual)
         actualizar_curso.root.mainloop()
 
     def eliminar_curso(self):
         from views.viewTkinter.viewCurso.eliminarCurso import EliminarCurso
-        eliminar_curso = EliminarCurso(self.db, tema_actual=self.tema_actual)
+        eliminar_curso = EliminarCurso(db=self.db, tema_actual=self.tema_actual)
         eliminar_curso.root.mainloop()
