@@ -87,6 +87,8 @@ class ListarProfesores:
         self.root.destroy()
         menu_principal = MenuPrincipal(self.db, self.tema_actual)
         menu_principal.root.mainloop()
+    
+    
 
     
         

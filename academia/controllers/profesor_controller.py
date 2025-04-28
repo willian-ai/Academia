@@ -36,7 +36,7 @@ class ProfesorController:
             SELECT id_profesor, nombre, apellido, correo_electronico, telefono, especialidad
             FROM profesores
         """
-        resultados = self.db.execute_select(sql)
+        resultados =self.db.execute_select(sql)
         return [Profesor(*resultado) for resultado in resultados]
 
     def obtener_profesor_id(self, id_profesor): 

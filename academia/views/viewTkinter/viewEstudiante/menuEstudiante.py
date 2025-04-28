@@ -18,8 +18,8 @@ class MenuEstudiante:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.3)
-        alto_ventana = int(alto_pantalla * 0.55)
+        ancho_ventana = int(ancho_pantalla * 0.2)
+        alto_ventana = int(alto_pantalla * 0.45)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
       # Configuracion de restricciones de la ventana
@@ -27,33 +27,33 @@ class MenuEstudiante:
 
         # Titulo de la ventana
         self.titulo_ventana = ctk.CTkLabel(self.root, text="Menu Estudiante", font=ctk.CTkFont(size=20, weight="bold"))
-        self.titulo_ventana.pack(pady=20)
+        self.titulo_ventana.pack(pady=10)
 
       #Boton para cambiar el tema
         self.tema_actual = "System"
         self.boton_cambiar_tema = ctk.CTkButton(self.root, text="Cambiar Tema", command=self.cambiar_tema)
-        self.boton_cambiar_tema.pack(pady=20)
+        self.boton_cambiar_tema.pack(pady=10)
 
         # Boton para listar estudiantes en una ventana emergente que tenga una tabla
         self.boton_listar_estudiantes = ctk.CTkButton(self.root, text="Listar Estudiantes", command=self.listar_estudiantes)
-        self.boton_listar_estudiantes.pack(pady=20)
+        self.boton_listar_estudiantes.pack(pady=10)
 
         #Boton para registrar estudiante
         self.boton_registrar_estudiante = ctk.CTkButton(self.root, text="Registrar Estudiante", command=self.registrar_estudiante)
-        self.boton_registrar_estudiante.pack(pady=20)
+        self.boton_registrar_estudiante.pack(pady=10)
 
         # Boton para actualizar estudiante
         self.boton_actualizar_estudiante = ctk.CTkButton(self.root, text="Actualizar Estudiante", command=self.actualizar_estudiante)
-        self.boton_actualizar_estudiante.pack(pady=20)
+        self.boton_actualizar_estudiante.pack(pady=10)
 
         # Boton para eliminar estudiante
         self.boton_eliminar_estudiante = ctk.CTkButton(self.root, text="Eliminar Estudiante", command=self.eliminar_estudiante)
-        self.boton_eliminar_estudiante.pack(pady=20)
+        self.boton_eliminar_estudiante.pack(pady=10)
         
 
       #Boton para regresar al menu principal
         self.boton_regresar = ctk.CTkButton(self.root, text="Regresar", command=self.regresar_menu_principal)
-        self.boton_regresar.pack(pady=20)
+        self.boton_regresar.pack(pady=10)
 
     def regresar_menu_principal(self):
         from views.viewTkinter.menuPrincipal import MenuPrincipal
@@ -86,7 +86,7 @@ class MenuEstudiante:
 
     def eliminar_estudiante(self):
         from views.viewTkinter.viewEstudiante.eliminarEstudiante import EliminarEstudiante
-        eliminar_estudiante = EliminarEstudiante(self.db, tema_actual=self.tema_actual)
+        eliminar_estudiante = EliminarEstudiante(db=self.db, tema_actual=self.tema_actual)
         eliminar_estudiante.root.mainloop()
         
         

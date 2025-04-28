@@ -21,8 +21,8 @@ class ActualizarProfesor:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.8)
-        alto_ventana = int(alto_pantalla * 0.8)
+        ancho_ventana = int(ancho_pantalla * 0.7)
+        alto_ventana = int(alto_pantalla * 0.6)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         self.root.resizable(False, False)
@@ -33,11 +33,11 @@ class ActualizarProfesor:
 
         # Crear un frame para la tabla de profesores
         self.frame_tabla = ctk.CTkFrame(self.root)
-        self.frame_tabla.pack(pady=10, padx=20, fill="both", expand=True)
+        self.frame_tabla.pack(pady=10)
 
         # Crear tabla usando treeview
         self.tabla = ttk.Treeview(self.frame_tabla, columns=("ID", "Nombre", "Apellido", "Email", "Telefono", "Especialidad"), show="headings")
-        self.tabla.pack(side="left", fill="both", expand=True)
+        self.tabla.pack(expand=True, fill="both")
         
                
         # Configurar encabezados
@@ -270,7 +270,7 @@ class ActualizarProfesor:
         
         if confirmacion:
             try:
-                # Actualizar los datos del profesor
+                 # Actualizar los datos del profesor
                 self.profesor_controller.actualizar_profesor(id_profesor, nombre, apellido, email, telefono, especialidad)
                 self.mostrar_mensaje("Éxito", "Los datos del profesor se han actualizado correctamente", "success")
                 self.cargar_profesores()

@@ -19,7 +19,7 @@ class RegistrarEstudiante:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.3)
+        ancho_ventana = int(ancho_pantalla * 0.2)
         alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}") 
         
@@ -86,7 +86,7 @@ class RegistrarEstudiante:
     def notificacion(self, mensaje=""):
         ventana_notificacion = ctk.CTk()
         ventana_notificacion.title("Notificacion")
-        ventana_notificacion.geometry("300x150")
+        ventana_notificacion.geometry("300x100")
         ventana_notificacion.resizable(False, False)
 
         label_notificacion = ctk.CTkLabel(ventana_notificacion, text=mensaje, font=("Helvetica", 16))

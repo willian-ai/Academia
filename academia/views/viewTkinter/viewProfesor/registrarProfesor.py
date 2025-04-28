@@ -20,58 +20,58 @@ class RegistrarProfesor:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.8)
-        alto_ventana = int(alto_pantalla * 0.8)
+        ancho_ventana = int(ancho_pantalla * 0.3)
+        alto_ventana = int(alto_pantalla * 0.70)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         self.root.resizable(False, False)
 
         # Titulo de la ventana
-        self.titulo = ctk.CTkLabel(self.root, text="Registrar Profesor", font=("Helvetica", 20))
-        self.titulo.pack(pady=20)
+        self.titulo = ctk.CTkLabel(self.root, text="Registrar Profesor", font=("Helvetica", 16))
+        self.titulo.pack(pady=10)
 
         # Crear el frame para los campos de entrada
         self.frame_campos = ctk.CTkFrame(self.root)
-        self.frame_campos.pack(padx=20, pady=10, fill="both", expand=True)
+        self.frame_campos.pack(pady=10, padx=20, fill="both", expand=True)
 
         # Crear los campos de entrada
         self.lbl_nombre = ctk.CTkLabel(self.frame_campos, text="Nombre:")
         self.lbl_nombre.pack(pady=5)
 
-        self.entry_nombre = ctk.CTkEntry(self.frame_campos, placeholder_text="Ingrese el nombre del profesor")
+        self.entry_nombre = ctk.CTkEntry(self.frame_campos, placeholder_text="Nombre")
         self.entry_nombre.pack(pady=5)
 
         self.lbl_apellido = ctk.CTkLabel(self.frame_campos, text="Apellido:")
         self.lbl_apellido.pack(pady=5)
 
-        self.entry_apellido = ctk.CTkEntry(self.frame_campos, placeholder_text="Ingrese el apellido del profesor")
+        self.entry_apellido = ctk.CTkEntry(self.frame_campos, placeholder_text="Apellido")
         self.entry_apellido.pack(pady=5)    
 
         self.lbl_email = ctk.CTkLabel(self.frame_campos, text="Email:")
         self.lbl_email.pack(pady=5)
 
-        self.entry_email = ctk.CTkEntry(self.frame_campos, placeholder_text="Ingrese el email del profesor")
+        self.entry_email = ctk.CTkEntry(self.frame_campos, placeholder_text="Email")
         self.entry_email.pack(pady=5)   
 
         self.lbl_telefono = ctk.CTkLabel(self.frame_campos, text="Telefono:")
         self.lbl_telefono.pack(pady=5)
 
-        self.entry_telefono = ctk.CTkEntry(self.frame_campos, placeholder_text="Ingrese el telefono del profesor")
+        self.entry_telefono = ctk.CTkEntry(self.frame_campos, placeholder_text="Telefono")
         self.entry_telefono.pack(pady=5)    
 
         self.lbl_especialidad = ctk.CTkLabel(self.frame_campos, text="Especialidad:")
         self.lbl_especialidad.pack(pady=5)
 
-        self.entry_especialidad = ctk.CTkEntry(self.frame_campos, placeholder_text="Ingrese la especialidad del profesor")
+        self.entry_especialidad = ctk.CTkEntry(self.frame_campos, placeholder_text="Especialidad")
         self.entry_especialidad.pack(pady=5)    
 
         # Boton para registrar el profesor
         self.btn_registrar = ctk.CTkButton(self.frame_campos, text="Registrar", command=self.registrar_profesor)
-        self.btn_registrar.pack(pady=10)
+        self.btn_registrar.pack(side="left", padx=10, pady=20, expand=True)
 
         # Boton para regresar al menu principal
         self.btn_regresar = ctk.CTkButton(self.frame_campos, text="Regresar", command=self.regresar_menu_principal)
-        self.btn_regresar.pack(pady=10)
+        self.btn_regresar.pack(side="right", padx=10, pady=20, expand=True)
 
     def registrar_profesor(self):
         nombre = self.entry_nombre.get()
@@ -103,7 +103,7 @@ class RegistrarProfesor:
         ventana_notificacion.resizable(False, False)
 
         label_notificacion = ctk.CTkLabel(ventana_notificacion, text=mensaje, font=("Helvetica", 12))
-        label_notificacion.pack(pady=20)
+        label_notificacion.pack(pady=10)
 
         btn_aceptar = ctk.CTkButton(ventana_notificacion, text="Aceptar", command=ventana_notificacion.destroy)
         btn_aceptar.pack(pady=10)
