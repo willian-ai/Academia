@@ -3,6 +3,7 @@ from .viewEstudiante.menuEstudiante import MenuEstudiante
 from .viewProfesor.menuProfesor import MenuProfesor
 from .viewCurso.menuCurso import MenuCurso
 from .viewHorario.menuHorario import MenuHorario
+from .viewMatricula.menuMatricula import MenuMatricula
 # Crear la clase principal de la ventana la cual se encargara de mostrar el menu principal
 class MenuPrincipal:
    
@@ -63,10 +64,10 @@ class MenuPrincipal:
         menu_curso.root.mainloop()
 
     def abrir_ventana_matriculas(self):
-        #self.root.destroy()
-        #menu_matricula = MenuMatricula(db = self.db, tema_actual = self.tema_actual)
-        #menu_matricula.root.mainloop()
-        pass
+        self.root.destroy()
+        menu_matricula = MenuMatricula(db = self.db, tema_actual = self.tema_actual)
+        menu_matricula.root.mainloop()
+
 
     def abrir_ventana_horarios(self):
         self.root.destroy()
