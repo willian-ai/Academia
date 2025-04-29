@@ -2,7 +2,7 @@ import customtkinter as ctk
 from .viewEstudiante.menuEstudiante import MenuEstudiante
 from .viewProfesor.menuProfesor import MenuProfesor
 from .viewCurso.menuCurso import MenuCurso
-
+from .viewHorario.menuHorario import MenuHorario
 # Crear la clase principal de la ventana la cual se encargara de mostrar el menu principal
 class MenuPrincipal:
    
@@ -69,10 +69,10 @@ class MenuPrincipal:
         pass
 
     def abrir_ventana_horarios(self):
-        #self.root.destroy()
-        #menu_horario = MenuHorario(db = self.db, tema_actual = self.tema_actual)
-        #menu_horario.root.mainloop()
-        pass
+        self.root.destroy()
+        menu_horario = MenuHorario(db = self.db, tema_actual = self.tema_actual)
+        menu_horario.root.mainloop()
+        
 
     def cambiar_tema(self):
         if self.tema_actual =="Light":
