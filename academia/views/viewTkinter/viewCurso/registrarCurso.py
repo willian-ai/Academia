@@ -6,6 +6,7 @@ import re
 class RegistrarCurso:
     def __init__(self, db=None, tema_actual="System"):
         self.db = db
+        self.tema_actual = tema_actual
         self.root = ctk.CTk()
         self.root.title("Registrar Curso")
         self.curso_controller = CursoController(db)

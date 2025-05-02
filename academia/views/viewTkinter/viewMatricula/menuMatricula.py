@@ -19,8 +19,8 @@ class MenuMatricula:
         alto_pantalla = self.root.winfo_screenheight()
         
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.4)
-        alto_ventana = int(alto_pantalla * 0.4)
+        ancho_ventana = int(ancho_pantalla * 0.2)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
         
         # Configuración de restricciones de la ventana
@@ -39,9 +39,6 @@ class MenuMatricula:
         self.boton_listar_matriculas.pack(pady=10)
 
         # Boton para registrar matrícula
-        self.boton_registrar_matricula = ctk.CTkButton(self.root, text="Registrar Matrícula", command=self.registrar_matricula)
-        self.boton_registrar_matricula.pack(pady=10)
-         # Boton para registrar matricula
         self.boton_registrar_matricula = ctk.CTkButton(self.root, text="Registrar Matrícula", command=self.registrar_matricula)
         self.boton_registrar_matricula.pack(pady=10)
 
@@ -75,7 +72,6 @@ class MenuMatricula:
         from views.viewTkinter.viewMatricula.listarMatricula import ListarMatriculas
         listar_matriculas = ListarMatriculas(db=self.db, tema_actual=self.tema_actual)
         listar_matriculas.root.mainloop()
-
 
     def registrar_matricula(self):
         from views.viewTkinter.viewMatricula.registrarMatricula import RegistrarMatricula

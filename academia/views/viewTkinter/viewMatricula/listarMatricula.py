@@ -76,8 +76,8 @@ class ListarMatriculas:
             for matricula in matriculas:
                 self.tabla.insert("", "end", values=(
                     matricula.id_matricula,
-                    matricula.estudiante_id,
-                    matricula.curso_id,
+                    matricula.id_estudiante,
+                    matricula.id_curso,
                     matricula.fecha_matricula
                 ))
         except IntegrityError as e:
