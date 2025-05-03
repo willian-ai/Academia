@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 from controllers.horario_controller import HorarioController
 from mysql.connector import IntegrityError
 import re
+from datetime import datetime
 class ActualizarHorario:
     def __init__(self, db=None, tema_actual="System"):
         self.db = db
@@ -35,30 +36,32 @@ class ActualizarHorario:
         self.frame_tabla.pack(pady=10)
         
         # Crear el Treeview
-        self.tabla = ttk.Treeview(self.frame_tabla, columns=("ID", "Curso ID", "Día", "Hora Inicio", "Hora Fin"), show="headings")
+        self.tabla = ttk.Treeview(self.frame_tabla, columns=("ID","Día", "Hora Inicio", "Hora Fin", "Curso ID"), show="headings")
         self.tabla.pack(expand=True, fill="both")
         
         # Configurar las columnas
         self.tabla.heading("ID", text="ID Horario")
-        self.tabla.heading("Curso ID", text="Curso ID")
         self.tabla.heading("Día", text="Día")
         self.tabla.heading("Hora Inicio", text="Hora Inicio")
         self.tabla.heading("Hora Fin", text="Hora Fin")
+        self.tabla.heading("Curso ID", text="Curso ID")
+     
         
 
         # Ajustar el ancho de las columnas
-        self.tabla.column("ID", width=100)
-        self.tabla.column("Curso ID", width=150)
-        self.tabla.column("Día", width=150)
-        self.tabla.column("Hora Inicio", width=150)
-        self.tabla.column("Hora Fin", width=150)
+        self.tabla.column("ID", width=50)
+        self.tabla.column("Día", width=100)
+        self.tabla.column("Hora Inicio", width=100)
+        self.tabla.column("Hora Fin", width=100)
+        self.tabla.column("Curso ID", width=100)
+       
 
         # Frame para los botones
         self.frame_botones = ctk.CTkFrame(self.root)
         self.frame_botones.pack(pady=10)
 
         # Botón para actualizar
-        self.btn_actualizar = ctk.CTkButton(self.frame_botones, text="Actualizar", command=self.actualizar_horario)
+        self.btn_actualizar = ctk.CTkButton(self.frame_botones, text="Actualizar", command=self.abrir_actualizar_horario)
         self.btn_actualizar.pack(side="left", padx=5)
 
         # Botón para regresar
@@ -81,10 +84,11 @@ class ActualizarHorario:
             for horario in horarios:
                 self.tabla.insert("", "end", values=(
                     horario.id_horario,
-                    horario.id_curso,
                     horario.dia_semana,
                     horario.hora_inicio,
-                    horario.hora_fin
+                    horario.hora_fin,
+                    horario.id_curso,
+                   
                 ))
         except IntegrityError as e:
             print(f"Error al cargar los datos de la tabla: {e}")
@@ -92,7 +96,7 @@ class ActualizarHorario:
     def mostrar_mensaje(self, titulo, mensaje, tipo="info"):
         ventana_mensaje = ctk.CTkToplevel(self.root)
         ventana_mensaje.title(titulo)
-        ventana_mensaje.geometry("300x150")
+        ventana_mensaje.geometry("800x150")
         ventana_mensaje.resizable(False, False)
 
         ctk.set_appearance_mode(self.tema_actual)
@@ -115,6 +119,7 @@ class ActualizarHorario:
 
         ctk.set_appearance_mode(self.tema_actual)
         respuesta = [False]
+        
         label_mensaje = ctk.CTkLabel(ventana_confirmacion, text=mensaje, font=("Arial", 12))
         label_mensaje.pack(pady=20)
         
@@ -136,7 +141,7 @@ class ActualizarHorario:
 
         return respuesta[0]
 
-    def actualizar_horario(self):
+    def abrir_actualizar_horario(self):
         # Obtener el horario seleccionado   
         seleccion = self.tabla.selection()
         if not seleccion:
@@ -146,10 +151,12 @@ class ActualizarHorario:
         # Obtener los datos del horario seleccionado    
         item = self.tabla.item(seleccion[0])
         id_horario = item["values"][0]
-        curso_id = item["values"][1]
-        dia_semana = item["values"][2]
-        hora_inicio = item["values"][3]
-        hora_fin = item["values"][4]
+        dia_semana = item["values"][1]
+        hora_inicio = item["values"][2]
+        hora_fin = item["values"][3]
+        id_curso = item["values"][4]
+       
+        
 
         # Crear ventana de actualización
         ventana_actualizacion = ctk.CTkToplevel(self.root)
@@ -164,14 +171,7 @@ class ActualizarHorario:
         frame_campos = ctk.CTkFrame(ventana_actualizacion)
         frame_campos.pack(pady=20, padx=20, fill="both", expand=True)
 
-        # Campo para el ID del curso
-        label_curso_id = ctk.CTkLabel(frame_campos, text="ID del Curso:")
-        label_curso_id.pack(pady=5)
-
-        self.entry_curso_id = ctk.CTkEntry(frame_campos)
-        self.entry_curso_id.insert(0, curso_id)
-        self.entry_curso_id.pack(pady=5)
-
+        
         # Campo para el día de la semana
         label_dia_semana = ctk.CTkLabel(frame_campos, text="Día de la Semana:")
         label_dia_semana.pack(pady=5)
@@ -195,6 +195,16 @@ class ActualizarHorario:
         self.entry_hora_fin = ctk.CTkEntry(frame_campos)
         self.entry_hora_fin.insert(0, hora_fin)
         self.entry_hora_fin.pack(pady=5)
+        
+        # Campo para el ID del curso
+        label_curso_id = ctk.CTkLabel(frame_campos, text="ID del Curso:")
+        label_curso_id.pack(pady=5)
+
+        self.entry_curso_id = ctk.CTkEntry(frame_campos)
+        self.entry_curso_id.insert(0, id_curso)
+        self.entry_curso_id.pack(pady=5)
+
+       
 
         # Frame para los botones
         frame_botones = ctk.CTkFrame(ventana_actualizacion)
@@ -216,29 +226,44 @@ class ActualizarHorario:
 
     def guardar_cambios(self, id_horario, ventana):
         # Obtener los nuevos valores
-        nuevo_curso_id = self.entry_curso_id.get()
         nuevo_dia_semana = self.entry_dia_semana.get()
         nuevo_hora_inicio = self.entry_hora_inicio.get()
         nuevo_hora_fin = self.entry_hora_fin.get()
+        nuevo_curso_id = self.entry_curso_id.get()
+        
         
         # Validar campos
-        if not nuevo_curso_id or not nuevo_dia_semana or not nuevo_hora_inicio or not nuevo_hora_fin:
+        if not nuevo_dia_semana or not nuevo_hora_inicio or not nuevo_hora_fin or not nuevo_curso_id:
             self.mostrar_mensaje("Error", "Todos los campos son requeridos", "error")
             return
         
-        # Validar formato de hora (HH:MM:SS)
-        hora_regex = r'^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$'
-        if not re.match(hora_regex, nuevo_hora_inicio) or not re.match(hora_regex, nuevo_hora_fin):
-            self.mostrar_mensaje("Error", "El formato de hora debe ser HH:MM:SS (24 horas)", "error")
+        if not nuevo_curso_id.isdigit():
+            self.mostrar_mensaje("Error", "El ID del curso debe ser un número", "error")
             return
-
-        # Validar que la hora de fin sea mayor que la hora de inicio
-        hora_inicio = int(nuevo_hora_inicio.replace(':', ''))
-        hora_fin = int(nuevo_hora_fin.replace(':', ''))
-        if hora_fin <= hora_inicio:
-            self.mostrar_mensaje("Error", "La hora de fin debe ser mayor que la hora de inicio", "error")
-            return  
         
+        # Validar formato de hora
+        try:
+            nuevo_hora_inicio = datetime.strptime(nuevo_hora_inicio, "%H:%M:%S")
+            nuevo_hora_fin = datetime.strptime(nuevo_hora_fin, "%H:%M:%S")
+        except ValueError:
+            self.mostrar_mensaje("Error", "El formato de hora debe ser HH:MM:SS", "error")
+            return
+        
+        if nuevo_hora_inicio >= nuevo_hora_fin:
+            self.mostrar_mensaje("Error", "La hora de inicio debe ser menor que la hora de fin", "error")
+            return
+        
+        if nuevo_hora_inicio == nuevo_hora_fin:
+            self.mostrar_mensaje("Error", "La hora de inicio y la hora de fin deben ser diferentes", "error")
+            return
+        
+        if nuevo_dia_semana not in ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"]:
+            self.mostrar_mensaje("Error", "El dia de la semana debe ser un dia de la semana", "error")
+            return
+        
+        
+        
+       
         # Mostrar confirmación
         confirmacion = self.mostrar_confirmacion("Confirmar Actualización",
                                                "¿Estás seguro de querer actualizar los datos del horario?")
@@ -246,23 +271,14 @@ class ActualizarHorario:
         if confirmacion:
             # Actualizar el horario
             try:
-                # Convertir el ID del curso a entero
-                nuevo_curso_id = int(nuevo_curso_id)
-                # Llamar al controlador con los parámetros en el orden correcto
-                self.controller.actualizar_horario(
-                    id_horario=id_horario,
-                    id_curso=nuevo_curso_id,
-                    dia=nuevo_dia_semana,
-                    hora_inicio=nuevo_hora_inicio,
-                    hora_fin=nuevo_hora_fin
-                )
+                self.controller.actualizar_horario(id_horario, nuevo_dia_semana, nuevo_hora_inicio, nuevo_hora_fin, nuevo_curso_id)
                 self.mostrar_mensaje("Éxito", "Los datos del horario se han actualizado correctamente", "info")
                 self.cargar_datos_tabla()
                 ventana.destroy()
-            except ValueError:
-                self.mostrar_mensaje("Error", "El ID del curso debe ser un número", "error")
             except Exception as e:
                 self.mostrar_mensaje("Error", f"Error al actualizar el horario: {str(e)}", "error")
+                
+              
         
         
     def regresar_menu_principal(self):
@@ -271,7 +287,7 @@ class ActualizarHorario:
         menu_principal = MenuPrincipal(db=self.db, tema_actual=self.tema_actual)
         menu_principal.root.mainloop()
         
-        
+   
         
         
         

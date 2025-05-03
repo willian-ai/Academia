@@ -112,7 +112,7 @@ class ActualizarMatricula:
         ventana_confirmacion.geometry("300x150")
         ventana_confirmacion.resizable(False, False)
 
-        ctk.root.set_appearance_mode(self.tema_actual)
+        ctk.set_appearance_mode(self.tema_actual)
         respuesta = [False]
 
         label_mensaje = ctk.CTkLabel(ventana_confirmacion, text=mensaje, font=("Arial", 12))
