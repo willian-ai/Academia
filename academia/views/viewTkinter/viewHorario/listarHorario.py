@@ -20,8 +20,8 @@ class ListarHorarios:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.65)
-        alto_ventana = int(alto_pantalla * 0.4)
+        ancho_ventana = int(ancho_pantalla * 0.7)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
         
         # Configuracion de restricciones de la ventana
@@ -47,7 +47,7 @@ class ListarHorarios:
         self.tabla.heading("Hora Fin", text="Hora Fin")
         
         # Ajustar anchos de columna
-        self.tabla.column("ID", width=50)
+        self.tabla.column("ID", width=100)
         self.tabla.column("Curso ID", width=100)
         self.tabla.column("Día", width=150)
         self.tabla.column("Hora Inicio", width=150)
@@ -83,7 +83,7 @@ class ListarHorarios:
     def regresar_menu_principal(self):
         from views.viewTkinter.menuPrincipal import MenuPrincipal
         self.root.destroy()
-        menu_principal = MenuPrincipal(self.tema_actual)
+        menu_principal = MenuPrincipal(db=self.db, tema_actual=self.tema_actual)
         menu_principal.root.mainloop()
 
     

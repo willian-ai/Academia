@@ -7,6 +7,7 @@ class ListarCursos:
     def __init__(self, db=None, tema_actual="System"):
         self.db = db
         self.root = ctk.CTk()
+        self.tema_actual = tema_actual
         self.root.title("Listar Cursos")
         self.curso_controller = CursoController(db)
 
@@ -18,8 +19,8 @@ class ListarCursos:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.65)
-        alto_ventana = int(alto_pantalla * 0.4)
+        ancho_ventana = int(ancho_pantalla * 0.7)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         # Configuracion de restricciones de la ventana
@@ -46,10 +47,10 @@ class ListarCursos:
 
         # Ajustar el ancho de las columnas
         self.tabla.column("ID", width=100)
-        self.tabla.column("Nombre", width=150)
-        self.tabla.column("Descripción", width=200)
+        self.tabla.column("Nombre", width=200)
+        self.tabla.column("Descripción", width=250)
         self.tabla.column("Duración", width=100)
-        self.tabla.column("ID Profesor", width=100)
+        self.tabla.column("ID Profesor", width=80)
 
         # Cargar los datos de la tabla
         self.cargar_datos_tabla()

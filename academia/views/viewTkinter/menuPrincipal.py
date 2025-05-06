@@ -17,7 +17,7 @@ class MenuPrincipal:
 
         
         ancho_ventana = int(self.root.winfo_screenwidth() * 0.2)
-        alto_ventana = int(self.root.winfo_screenheight() * 0.45)
+        alto_ventana = int(self.root.winfo_screenheight() * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
     
         #  Restriccion de la ventana
@@ -36,7 +36,7 @@ class MenuPrincipal:
             ("Profesores", self.abrir_ventana_profesores),
             ("Cursos", self.abrir_ventana_cursos),
             ("Matriculas", self.abrir_ventana_matriculas),
-            ("Horarios", self.abrir_ventana_horarios)
+            ("Horarios", self.abrir_ventana_horarios),
         ]
         
         for i, (text, command) in enumerate(botones):

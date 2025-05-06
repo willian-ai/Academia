@@ -22,7 +22,7 @@ class ActualizarProfesor:
 
         # Asignar el tamaño de la ventana
         ancho_ventana = int(ancho_pantalla * 0.7)
-        alto_ventana = int(alto_pantalla * 0.6)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         self.root.resizable(False, False)
@@ -125,7 +125,7 @@ class ActualizarProfesor:
         # Crear una ventana de confirmacion personalizada
         ventana_confirmacion = ctk.CTkToplevel(self.root)
         ventana_confirmacion.title(titulo)
-        ventana_confirmacion.geometry("300x150")
+        ventana_confirmacion.geometry("350x150")
         ventana_confirmacion.resizable(False, False)
 
         # Configurar el tema de la ventana
@@ -272,7 +272,7 @@ class ActualizarProfesor:
             try:
                  # Actualizar los datos del profesor
                 self.profesor_controller.actualizar_profesor(id_profesor, nombre, apellido, email, telefono, especialidad)
-                self.mostrar_mensaje("Éxito", "Los datos del profesor se han actualizado correctamente", "success")
+                self.mostrar_mensaje("Éxito", "Profesor actualizado correctamente", "success")
                 self.cargar_profesores()
                 ventana.destroy()
             except Exception as e:

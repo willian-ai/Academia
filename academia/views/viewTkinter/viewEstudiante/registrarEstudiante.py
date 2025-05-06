@@ -8,6 +8,7 @@ class RegistrarEstudiante:
     def __init__(self, db = None, tema_actual = "System"):
         self.db = db
         self.root = ctk.CTk()
+        self.tema_actual = tema_actual
         self.root.title("Registrar Estudiante")
         self.estudiante_controller = EstudianteController(db)
 
@@ -86,7 +87,7 @@ class RegistrarEstudiante:
     def notificacion(self, mensaje=""):
         ventana_notificacion = ctk.CTk()
         ventana_notificacion.title("Notificacion")
-        ventana_notificacion.geometry("300x100")
+        ventana_notificacion.geometry("350x120")
         ventana_notificacion.resizable(False, False)
 
         label_notificacion = ctk.CTkLabel(ventana_notificacion, text=mensaje, font=("Helvetica", 16))

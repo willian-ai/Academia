@@ -20,7 +20,7 @@ class MenuProfesor:
 
         # Asignar el tamaño de la ventana
         ancho_ventana = int(ancho_pantalla * 0.2)
-        alto_ventana = int(alto_pantalla * 0.5)
+        alto_ventana = int(alto_pantalla * 0.45)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         self.root.resizable(False, False)

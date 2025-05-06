@@ -49,10 +49,10 @@ class ActualizarHorario:
         
 
         # Ajustar el ancho de las columnas
-        self.tabla.column("ID", width=50)
-        self.tabla.column("Día", width=100)
-        self.tabla.column("Hora Inicio", width=100)
-        self.tabla.column("Hora Fin", width=100)
+        self.tabla.column("ID", width=100)
+        self.tabla.column("Día", width=150)
+        self.tabla.column("Hora Inicio", width=150)
+        self.tabla.column("Hora Fin", width=150)
         self.tabla.column("Curso ID", width=100)
        
 

@@ -119,7 +119,7 @@ class EliminarProfesor:
         # Crear una ventana de confirmacion
         ventana_confirmacion = ctk.CTkToplevel(self.root)
         ventana_confirmacion.title(titulo)
-        ventana_confirmacion.geometry("300x150")
+        ventana_confirmacion.geometry("350x150")
         ventana_confirmacion.resizable(False, False)
             
         # Configurar el tema de la ventana

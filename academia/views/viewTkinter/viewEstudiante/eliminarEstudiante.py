@@ -20,7 +20,7 @@ class EliminarEstudiante:
 
         # Asignar el tamaño de la ventana   
         ancho_ventana = int(ancho_pantalla * 0.7)
-        alto_ventana = int(alto_pantalla * 0.4)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         # Configuracion de restricciones de la ventana
@@ -110,7 +110,7 @@ class EliminarEstudiante:
         # Crear una ventana de confirmacion
         ventana_confirmacion = ctk.CTkToplevel(self.root)
         ventana_confirmacion.title(titulo)
-        ventana_confirmacion.geometry("300x150")
+        ventana_confirmacion.geometry("360x150")
         ventana_confirmacion.resizable(False, False)
             
             # Configurar el tema de la ventana

@@ -7,6 +7,7 @@ class ListarProfesores:
     def __init__(self, db = None, tema_actual = "System"):
         self.db = db
         self.root = ctk.CTk()
+        self.tema_actual = tema_actual
         self.root.title("Listar Profesores")
         self.profesor_controller = ProfesorController(db)
 
@@ -19,8 +20,8 @@ class ListarProfesores:
         alto_pantalla = self.root.winfo_screenheight()
 
         # Asignar el tamaño de la ventana
-        ancho_ventana = int(ancho_pantalla * 0.8)
-        alto_ventana = int(alto_pantalla * 0.8)
+        ancho_ventana = int(ancho_pantalla * 0.7)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
 
         self.root.resizable(False, False)
@@ -47,12 +48,12 @@ class ListarProfesores:
         self.tabla.heading("Especialidad", text="Especialidad")
 
         # Ajustar el ancho de las columnas
-        self.tabla.column("ID", width=150)
-        self.tabla.column("Nombre", width=250)
-        self.tabla.column("Apellido", width=100)
-        self.tabla.column("Email", width=300)
-        self.tabla.column("Telefono", width=200)
-        self.tabla.column("Especialidad", width=250)
+        self.tabla.column("ID", width=100)
+        self.tabla.column("Nombre", width=120)
+        self.tabla.column("Apellido", width=120)
+        self.tabla.column("Email", width=200)
+        self.tabla.column("Telefono", width=100)
+        self.tabla.column("Especialidad", width=240)
 
         # Crear frame para los botones
         self.frame_botones = ctk.CTkFrame(self.root)
@@ -85,7 +86,7 @@ class ListarProfesores:
     def regresar_menu_principal(self):
         from views.viewTkinter.menuPrincipal import MenuPrincipal
         self.root.destroy()
-        menu_principal = MenuPrincipal(self.db, self.tema_actual)
+        menu_principal = MenuPrincipal(db = self.db, tema_actual = self.tema_actual)
         menu_principal.root.mainloop()
     
     

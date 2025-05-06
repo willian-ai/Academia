@@ -7,6 +7,7 @@ class ListarEstudiantes:
     def __init__(self, db = None, tema_actual = "System"):
         self.db = db
         self.root = ctk.CTk()
+        self.tema_actual = tema_actual
         self.root.title("Listar Estudiantes")
         self.estudiante_controller = EstudianteController(db)
 
@@ -20,7 +21,7 @@ class ListarEstudiantes:
 
         # Asignar el tamaño de la ventana
         ancho_ventana = int(ancho_pantalla * 0.7)   
-        alto_ventana = int(alto_pantalla * 0.4)
+        alto_ventana = int(alto_pantalla * 0.5)
         self.root.geometry(f"{ancho_ventana}x{alto_ventana}")
         
         # Configuracion de restricciones de la ventana
@@ -52,6 +53,9 @@ class ListarEstudiantes:
         self.tabla.column("Correo", width=200)
         self.tabla.column("Telefono", width=120)
 
+        # Boton para regresar al menu principal
+        self.boton_regresar = ctk.CTkButton(self.root, text="Regresar", command=self.regresar_menu_principal)
+        self.boton_regresar.pack(pady=10)
         # Cargar los datos de la tabla
         self.cargar_datos_tabla()
 
@@ -67,7 +71,13 @@ class ListarEstudiantes:
 
                 # Insertar los datos en la tabla
             for estudiante in estudiantes:
-                self.tabla.insert("", "end", values=(estudiante.id_estudiante, estudiante.nombre, estudiante.apellido, estudiante.correo, estudiante.telefono))
+                self.tabla.insert("", "end", values=(
+                    estudiante.id_estudiante, 
+                    estudiante.nombre, 
+                    estudiante.apellido, 
+                    estudiante.correo, 
+                    estudiante.telefono
+                    ))
                 
         except IntegrityError as e:
             print(f"Error al cargar los datos de la tabla: {e}")
@@ -75,7 +85,7 @@ class ListarEstudiantes:
     def regresar_menu_principal(self):
         from views.viewTkinter.menuPrincipal import MenuPrincipal
         self.root.destroy()
-        menu_principal = MenuPrincipal(db = None, tema_actual = self.tema_actual)
+        menu_principal = MenuPrincipal(db = self.db, tema_actual = self.tema_actual)
         menu_principal.root.mainloop()
                 
                 

@@ -88,7 +88,7 @@ class ActualizarEstudiante:
             # Crear una ventana de mensaje personalizado
         ventana_mensaje = ctk.CTkToplevel(self.root)
         ventana_mensaje.title(titulo)
-        ventana_mensaje.geometry("350x420")
+        ventana_mensaje.geometry("330x150")
         ventana_mensaje.resizable(False, False) 
 
             # Configurar el tema de la ventana
@@ -112,7 +112,7 @@ class ActualizarEstudiante:
         # Crear una ventana de confirmacion
         ventana_confirmacion = ctk.CTkToplevel(self.root)
         ventana_confirmacion.title(titulo)
-        ventana_confirmacion.geometry("500x350")
+        ventana_confirmacion.geometry("350x200")
         ventana_confirmacion.resizable(False, False)    
             # Configurar el tema de la ventana      
         ctk.set_appearance_mode(self.tema_actual)
@@ -160,7 +160,7 @@ class ActualizarEstudiante:
             # Crear ventana de actualizacion
         ventana_actualizacion = ctk.CTkToplevel(self.root)
         ventana_actualizacion.title("Actualizar Estudiante")
-        ventana_actualizacion.geometry("320x500")
+        ventana_actualizacion.geometry("400x450")
         ventana_actualizacion.resizable(False, False)
 
             # Configurar el tema de la ventana
